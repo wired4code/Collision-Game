@@ -26,8 +26,6 @@ var createBoardWithEnemies = function(nEnemies, boardHeight, boardWidth) {
   }
 }
 
-// Create a player.
-
 
 var drag = d3.behavior.drag()
              //.on('dragstart', function() { player.style('fill', 'red'); })
@@ -55,7 +53,6 @@ var drag = d3.behavior.drag()
              //.on('dragend', function() { player.style('fill', 'black'); });
 
 
-
 createBoardWithEnemies(gameOptions.nEnemies, gameOptions.height, gameOptions.width);
 
 var player = d3.select("svg").append("circle")
@@ -65,7 +62,16 @@ var player = d3.select("svg").append("circle")
   .attr("fill", "red")
   .call(drag);
 
+// Possible help for iterating through enemy array.
+//http://stackoverflow.com/questions/27405377/iterate-over-already-created-nodes-in-d3js
 
+setInterval(function(){
+  //var enemies = d3.selectAll('image');
+  d3.select('image').transition()
+    .attr("x", Math.random() * gameOptions.width)
+    .attr("y", Math.random() * gameOptions.height)
+    .duration(2000);
+}, 1000);
 
 
 
