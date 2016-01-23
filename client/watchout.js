@@ -10,10 +10,6 @@ var gameOptions = {
   nEnemies: 30
 };
 
-
-
-
-
 var createBoardWithEnemies = function(nEnemies, boardHeight, boardWidth) {
   // Create board.
   var svg = d3.select("body").append("svg")
@@ -28,14 +24,52 @@ var createBoardWithEnemies = function(nEnemies, boardHeight, boardWidth) {
       .attr("x", Math.random() * boardHeight)
       .attr("y", Math.random() * boardWidth);
   }
+}
 
-  // Create a player.
-  var player = d3.select("svg").append("circle")
-    .attr("cx", 350)
-    .attr("cy", 350)
-    .attr("r", 10)
-    .attr("fill", "red");
+// Create a player.
 
-};
+
+var drag = d3.behavior.drag()
+             //.on('dragstart', function() { player.style('fill', 'red'); })
+             .on('drag', function() {
+
+                var setX = d3.event.x;
+                var setY = d3.event.y;
+
+                if(d3.event.x > 700){
+                  setX = 700;
+                } else if(d3.event.x < 0){
+                  setX = 0;
+                }
+
+                if(d3.event.y > 700){
+                  setY = 700;
+                } else if(d3.event.y < 0){
+                  setY = 0;
+                }
+
+
+              player.attr('cx', setX)
+             .attr('cy', setY);
+});
+             //.on('dragend', function() { player.style('fill', 'black'); });
+
+
 
 createBoardWithEnemies(gameOptions.nEnemies, gameOptions.height, gameOptions.width);
+
+var player = d3.select("svg").append("circle")
+  .attr("cx", gameOptions.width/2)
+  .attr("cy", gameOptions.height/2)
+  .attr("r", 10)
+  .attr("fill", "red")
+  .call(drag);
+
+
+
+
+
+
+
+
+
