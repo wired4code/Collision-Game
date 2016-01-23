@@ -26,7 +26,13 @@ var createBoardWithEnemies = function(nEnemies, boardHeight, boardWidth) {
       .attr("y", Math.random() * boardWidth);
   }
   createPlayer();
-  //detectAllEnemies();
+
+  setInterval(function(){
+    gameStats.currentScore++;
+    //console.log(gameStats.currentScore);
+    d3.select("#currentscore").text(gameStats.currentScore);
+  }, 1000);
+  detectAllEnemies();
 }
 
 var drag = d3.behavior.drag()
@@ -63,8 +69,15 @@ var collisionCheck = function(){
   var playerY = d3.select('circle').attr('cy');
 
   if ( ( Math.abs(enemyX - playerX) <= 20) && ( Math.abs(enemyY - playerY) <= 20) ) {
-    console.log('Collision detected');
-    d3.select("svg").attr('class', 'collision');
+    // console.log('Collision detected');
+    // d3.select("svg").attr('class', 'collision');
+    if (gameStats.highScore < gameStats.currentScore) {
+      gameStats.highScore = gameStats.currentScore;
+      d3.select("#high").text(gameStats.currentScore);
+    }
+    gameStats.collisions++;
+    d3.select("#col").text(gameStats.collisions);
+    gameStats.currentScore = 0;
   }
 
   // var xDiff = enemyX - d3.select("circle").attr("cx");
@@ -111,7 +124,6 @@ setInterval(function(){
 
 setInterval(detectAllEnemies, 100);
 //detectAllEnemies();
-
 
 
 
