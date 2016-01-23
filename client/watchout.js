@@ -103,13 +103,13 @@ var setNewLocation = function(){
 
 createBoardWithEnemies(gameOptions.nEnemies, gameOptions.height, gameOptions.width);
 //detectAllEnemies();
-// setInterval(function(){
-//   //var enemies = d3.selectAll('image');
-//   d3.selectAll('image')
-//     .each(setNewLocation);
-// }, 2000);
+setInterval(function(){
+  //var enemies = d3.selectAll('image');
+  d3.selectAll('image')
+    .each(setNewLocation);
+}, 2000);
 
-setInterval(detectAllEnemies, 10);
+setInterval(detectAllEnemies, 100);
 //detectAllEnemies();
 
 
