@@ -1,5 +1,13 @@
-/* your beautiful css styling goes here! */
-
-/* Note: an asteroid image is included in this repo.
-Feel free to use it if you like. */
+body {
+  width: 1000px;
+}
+.board {
+  width: 700px;
+  height: 700px;
+  background-color: #333;
+  display: block;
+  margin: 25px;
+  margin-right: auto;
+  margin-left: auto;
+}
 
