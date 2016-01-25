@@ -10,6 +10,8 @@ var gameOptions = {
   nEnemies: 10
 };
 
+var startScore = true;
+
 var createBoardWithEnemies = function(nEnemies, boardHeight, boardWidth) {
   // Create board.
   var svg = d3.select("body").append("svg")
@@ -18,20 +20,22 @@ var createBoardWithEnemies = function(nEnemies, boardHeight, boardWidth) {
   // Add 30 enemies to board at random locations.
   for (var i = 0; i < nEnemies; i++) {
     var enemy = d3.select("svg").append("image")
+      .attr("class", "enemies")
       .attr("xlink:href", "asteroid.png")
       .attr("r", 10)
       .attr("height", 20)
       .attr("width", 20)
+      /*.attr('class', 'image')*/
       .attr("x", Math.random() * boardHeight)
       .attr("y", Math.random() * boardWidth);
+/*      .attr('animation-name', 'spin')
+      .attr('animation-duration', 4000)
+      .attr('animation-iteration-count', 'infinte')
+      .attr('animation-timing-function', 'linear');*/
   }
   createPlayer();
 
-  setInterval(function(){
-    gameStats.currentScore++;
-    //console.log(gameStats.currentScore);
-    d3.select("#currentscore").text(gameStats.currentScore);
-  }, 1000);
+
   detectAllEnemies();
 }
 
@@ -75,25 +79,26 @@ var collisionCheck = function(){
       gameStats.highScore = gameStats.currentScore;
       d3.select("#high").text(gameStats.currentScore);
     }
+    d3.select('circle').attr('fill', 'green');
     gameStats.collisions++;
     d3.select("#col").text(gameStats.collisions);
+    d3.select("#currentscore").text(0);
     gameStats.currentScore = 0;
+    d3.select('svg').remove();
+    //clearInterval(startScore);
+    d3.select('body').append('div')
+      .attr('class', 'asteroid');
+/*      .attr('xlink:href', 'asteroid-impact.jpg')
+      .attr('height', 700)
+      .attr('width', 700)*/
+      //.text('YOU GOT HIT!');
+    setTimeout(function() {
+      d3.select('.asteroid').remove();
+      d3.select("#currentscore").text(gameStats.currentScore);
+      createBoardWithEnemies(gameOptions.nEnemies, gameOptions.height, gameOptions.width);
+    }, 1000)
+
   }
-
-  // var xDiff = enemyX - d3.select("circle").attr("cx");
-  // var yDiff = enemyY - d3.select("circle").attr("cy");
-  // var radiusSum = d3.select(this).attr('r') + d3.select('circle').attr('r');
-
-  // var seperation = Math.sqrt( (xDiff * xDiff) + (yDiff * yDiff) );
-
-  // if (seperation <= radiusSum) {
-  //   console.log('collision!')
-  //   d3.select('svg')
-  //     .attr('class', 'collision');
-    //d3.selectAll("svg").remove();
-    /*createBoardWithEnemies(gameOptions.nEnemies, gameOptions.height, gameOptions.width);*/
-    //createPlayer();
-  //}
 
 };
 
@@ -115,7 +120,13 @@ var setNewLocation = function(){
 };
 
 createBoardWithEnemies(gameOptions.nEnemies, gameOptions.height, gameOptions.width);
-//detectAllEnemies();
+
+var startScore = setInterval(function(){
+    gameStats.currentScore++;
+    d3.select("#currentscore").text(gameStats.currentScore);
+  }, 1000);
+
+
 setInterval(function(){
   //var enemies = d3.selectAll('image');
   d3.selectAll('image')
